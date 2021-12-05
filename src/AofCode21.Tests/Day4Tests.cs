@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace AofCode21.Tests
 {
     [TestClass]
-    public class Day4
+    public class Day4Tests
     {
         [TestMethod]
         public void Answer1()

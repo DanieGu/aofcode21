@@ -1,26 +1,14 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace AofCode21.Tests
+namespace AofCode21
 {
-    [TestClass]
     public class Day2
     {
-        private enum Direction
+        public static int FirstStar(IEnumerable<string> input)
         {
-            Forward,
-            Down,
-            Up
-        }
-
-        [TestMethod]
-        public void First()
-        {
-            var input = File.ReadAllLines("Day2Input.txt");
             var movements = input.Select(s => Regex.Match(s, @"^(?<dir>[^\s]+)\s+(?<dis>[0-9]+)$"))
                 .Select(m => new {
                     dir = (Direction)Enum.Parse(typeof(Direction), m.Groups["dir"].Value, true), 
@@ -30,7 +18,27 @@ namespace AofCode21.Tests
             var depth = movements.Where(m => m.dir == Direction.Down).Sum(m => m.dis) - movements.Where(m => m.dir == Direction.Up).Sum(m => m.dis);
             var horizontal = movements.Where(m => m.dir == Direction.Forward).Sum(m => m.dis);
 
-            Assert.Inconclusive($"Answer is {horizontal * depth}");
+            return horizontal * depth;
+        }
+
+        public static int SecondStar(IEnumerable<string> input)
+        {
+            var movements = input.Select(s => Regex.Match(s, @"^(?<dir>[^\s]+)\s+(?<dis>[0-9]+)$"))
+                .Select(m => (
+                    dir: (Direction)Enum.Parse(typeof(Direction), m.Groups["dir"].Value, true), 
+                    dis: int.Parse(m.Groups["dis"].Value)))
+                .ToList();
+
+            var location = Location.FromMovements(movements);
+
+            return location.Horizontal * location.Depth;
+        }
+
+        private enum Direction
+        {
+            Forward,
+            Down,
+            Up
         }
 
         private class Location
@@ -58,21 +66,6 @@ namespace AofCode21.Tests
                     Depth += Aim * movement.dis;
                 }
             }
-        }
-
-        [TestMethod]
-        public void Second()
-        {
-            var input = File.ReadAllLines("Day2Input.txt");
-            var movements = input.Select(s => Regex.Match(s, @"^(?<dir>[^\s]+)\s+(?<dis>[0-9]+)$"))
-                .Select(m => (
-                    dir: (Direction)Enum.Parse(typeof(Direction), m.Groups["dir"].Value, true), 
-                    dis: int.Parse(m.Groups["dis"].Value)))
-                .ToList();
-
-            var location = Location.FromMovements(movements);
-
-            Assert.Inconclusive($"Answer is {location.Horizontal * location.Depth}");
         }
     }
 
