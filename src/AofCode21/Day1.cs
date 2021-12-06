@@ -4,6 +4,7 @@ using System.Linq;
 
 namespace AofCode21
 {
+    //https://adventofcode.com/2021/day/1
     public class Day1
     {
         public static int FirstStar(IEnumerable<string> inputStr)
